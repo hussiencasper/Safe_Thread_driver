@@ -96,7 +96,7 @@ int UART_write(uint8_t *buffer, int len){
 		OSUnLock();
 	}    
 	/*if the length == number of iterations the whole length is passed to the TX queue*/
-  if(TXcounter == len){
+    if(TXcounter == len){
       ReturnVal=UART_DONE;
     }
 	else{
@@ -109,10 +109,10 @@ int UART_write(uint8_t *buffer, int len){
 void UART_handler(void){
 	const UART *CfgPtr;	
 	/*TX_READY flag won't be set except if there possibilty to send data*/
-   if((CfgPtr->TX_READY) == SEND){
+    if((CfgPtr->TX_READY) == SEND){
 	/*send by getting it from the TXqueue*/
-	(CfgPtr->TX) = Pop(TXPTR);
-	 /*add semaphore since there is free space in the queue after sending */
+	 (CfgPtr->TX) = Pop(TXPTR);
+	  /*add semaphore since there is free space in the queue after sending */
 	OSSemaphoreSignal(TXSEM);	
 	}
 	if((CfgPtr->RX_READY) == READ){
@@ -128,7 +128,8 @@ void UART_handler(void){
 static int Empty(int front,int EmptyFlag)){
 	if(front>(MAX_SIZE-1)){
 		EmptyFlag = 1;
-	}else{
+	}
+	else{
 		EmptyFlag = 0;
 	}
 	return EmptyFlag;
@@ -137,7 +138,8 @@ static int Empty(int front,int EmptyFlag)){
 static int Full(int rear,int FullFlag){
 	if(rear>=(MAX_SIZE-1)){
 		FullFlag = 1;
-	}else{
+	}
+	else{
 		FullFlag = 0;
 	}
 	return FullFlag;
