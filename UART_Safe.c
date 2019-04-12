@@ -8,28 +8,6 @@
 #include "UART.h"
 
 /******************************************************************************
-*                           UART Registers Struct                             *
-*******************************************************************************/
-/*
-
- 1)Uart->RX //read-only; contains the last byte read from the serial line
- 2)Uart->TX //write-only; if a byte is written to TX, the value is trasmitted on the serial line
- 
- 3)Uart->TX_READY //read-only; 1 if a write on TX can be done, 0 if TX is busy. After reading TX_READY, it goes
-to 0 automatically. If Uart interrupts are enabled, the Uart handler is called
- 4)Uart->RX_READY //read-only; 1 if a byte has been read from RX, 0 if the serial line is silent. After reading
-RX_READY, it goes to 0 automatically. If Uart interrupts are enabled, the Uart handler is called
-
- 5)Uart->RX_INT //read/write; write 1 to enable Uart interrupt when RX_READY transitions to 1, write 0 to disable
-interrupt for RX events.
- 6)Uart->TX_INT //read/write; write 1 to enable Uart interrupt when TX_READY transitions to 1, write 0 to disable
-interrupt for TX events.
-
-7)Uart->INTPOS //read-only; contains the position of the Uart interrupt handler in the simplARM vector table
-8)Uart->ENABLE //write-only; write 1 to enable the peripheral, 0 to disable
-*/
-
-/******************************************************************************
 *                          Creating Queues and Sempahores                     *
 *******************************************************************************/
 /*Rx & Tx queues*/
@@ -57,9 +35,6 @@ int UART_Init(void){
 	(CfgPtr->TX_INT) = DISABLED;
 	/*Clear the RX interrupt*/
 	(CfgPtr->RX_INT) = DISABLED;
-	
-	
-	 
 	/*installing the handler using its name and position from the INTTPOS*/
     simpl_install_handler((CfgPtr->INTPOS), UART_handler());
 	 /*SET the Tx interrupt*/
@@ -108,7 +83,7 @@ int UART_write(uint8_t *buffer, int len){
     
 	 const UART *CfgPtr;
 	 int ReturnVal = UART_NODONE;
-     uint8_t TXcounter = 0;
+     uint8_t TXcounter;
 
 	for(TXcounter=0;TXcounter<len;TXcounter++){
 		/*Semaphore is previously intialized by size of queue */
@@ -168,7 +143,7 @@ static int Full(int rear,int FullFlag){
 	return FullFlag;
 }
 
-static void Push(Queue* Pushq,int data){
+static void Push(Queue* Pushq,uint8_t data){
 
 	if(!Full((Pushq->Rear),(Pushq->Full))){
 	    (Pushq->Rear)++;
@@ -178,7 +153,7 @@ static void Push(Queue* Pushq,int data){
 }
 static uint8_t Pop(Queue* Popq){
 	
-    int value=-1;
+    uint8_t value;
 	int front = (Popq->Front);
 	if(!Empty((Popq->Front),(Popq->Empty))){
 		
