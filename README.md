@@ -56,11 +56,15 @@ Uart->ENABLE //write-only; write 1 to enable the peripheral, 0 to disable.
 OS Available primitives:
 =
 void OSLock() :Disables simplARM global interrupts and begins a critical section.
+
 void OSUnlock() : Enables simplARM global interrupts and exits a critical section. On exit, existing interrupts are
 handled.
+
 Semaphore OSCreateSemaphore(int n) : creates a counting semaphore initialized at value n.
+
 void OSSemaphoreSignal(Semaphore sem) : atomically increments the semaphore value by 1. If the value is non
 positive, wakes up a suspended thread.
+
 void OSSemaphoreWait(Semaphore sem) : atomically decrease the semaphore value by 1. If the value is negative,
 suspends the calling thread.
 
