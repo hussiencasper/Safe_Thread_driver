@@ -31,30 +31,38 @@ it is not required that each thread's buffer is written sequentially.
 a UART peripheral:
 =
 The UART of simplARM has fixed baudrate, no hardware flow control, full duplex communication and is controllable
-with the following 32 bit registers, accessible from the global structure Uart
-Uart->RX //read-only; contains the last byte read from the serial line
-Uart->TX //write-only; if a byte is written to TX, the value is trasmitted on the serial line
+with the following 32 bit registers, accessible from the global structure Uart.
+
+Uart->RX //read-only; contains the last byte read from the serial line.
+
+Uart->TX //write-only; if a byte is written to TX, the value is trasmitted on the serial line.
+
 Uart->TX_READY //read-only; 1 if a write on TX can be done, 0 if TX is busy. After reading TX_READY, it goes
-to 0 automatically. If Uart interrupts are enabled, the Uart handler is called
+to 0 automatically. If Uart interrupts are enabled, the Uart handler is called.
+
 Uart->RX_READY //read-only; 1 if a byte has been read from RX, 0 if the serial line is silent. After reading
-RX_READY, it goes to 0 automatically. If Uart interrupts are enabled, the Uart handler is called
+RX_READY, it goes to 0 automatically. If Uart interrupts are enabled, the Uart handler is called.
+
 Uart->RX_INT //read/write; write 1 to enable Uart interrupt when RX_READY transitions to 1, write 0 to disable
 interrupt for RX events.
+
 Uart->TX_INT //read/write; write 1 to enable Uart interrupt when TX_READY transitions to 1, write 0 to disable
 interrupt for TX events.
-Uart->INTPOS //read-only; contains the position of the Uart interrupt handler in the simplARM vector table
-Uart->ENABLE //write-only; write 1 to enable the peripheral, 0 to disable
+
+Uart->INTPOS //read-only; contains the position of the Uart interrupt handler in the simplARM vector table.
+
+Uart->ENABLE //write-only; write 1 to enable the peripheral, 0 to disable.
 
 OS Available primitives:
 =
-void OSLock() :Disables simplARM global interrupts and begins a critical section
+void OSLock() :Disables simplARM global interrupts and begins a critical section.
 void OSUnlock() : Enables simplARM global interrupts and exits a critical section. On exit, existing interrupts are
-handled
-Semaphore OSCreateSemaphore(int n) : creates a counting semaphore initialized at value n
+handled.
+Semaphore OSCreateSemaphore(int n) : creates a counting semaphore initialized at value n.
 void OSSemaphoreSignal(Semaphore sem) : atomically increments the semaphore value by 1. If the value is non
-positive, wakes up a suspended thread
+positive, wakes up a suspended thread.
 void OSSemaphoreWait(Semaphore sem) : atomically decrease the semaphore value by 1. If the value is negative,
-suspends the calling thread
+suspends the calling thread.
 
 
 
