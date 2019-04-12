@@ -9,7 +9,6 @@ again on exit.
 
 SimplOS: a Realtime Operating System, with minimal support for preemptive scheduling running on a 1 millisecond
 systick. Threads can be in the active or suspended state only. No dynamic memory allocation allowed.
-============================================================================================================
 The driver must be composed of the following API functions:
 int UART_Init();
 int UART_read(uint8_t *buffer, int len)
